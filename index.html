@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    width: 80%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkblue;
+}
+
+#result {
+    margin-top: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Email Verification Tool</h2>
+        <input type="email" id="emailInput" placeholder="Enter email to verify" required>
+        <button onclick="verifyEmail()">Verify</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+    async function verifyEmail() {
+    const email = document.getElementById("emailInput").value;
+    const resultDiv = document.getElementById("result");
+
+    if (!email) {
+        resultDiv.innerHTML = "<p style='color: red;'>Please enter an email.</p>";
+        return;
+    }
+
+    resultDiv.innerHTML = "<p>Checking...</p>";
+
+    try {
+        const response = await fetch(`http://localhost:5000/verify-all?email=${encodeURIComponent(email)}`);
+        
+        // Ensure response is JSON
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        
+        const data = await response.json();
+
+        let resultHtml = `
+            <h3>Results for ${email}</h3>
+            <p><strong>Syntax Valid:</strong> ${data.valid_syntax ? "✅ Yes" : "❌ No"}</p>
+            <p><strong>Domain Valid:</strong> ${data.valid_domain ? "✅ Yes" : "❌ No"}</p>
+            <p><strong>SMTP Check:</strong> ${data.smtp_check ? "✅ Yes" : "❌ No"}</p>
+            <p><strong>Message:</strong> ${data.message}</p>
+        `;
+
+        resultDiv.innerHTML = resultHtml;
+    } catch (error) {
+        resultDiv.innerHTML = "<p style='color: red;'>Error checking email. Please check the console.</p>";
+        console.error("Fetch error:", error);
+    }
+}
+
+    </script>
+</body>
+</html>
