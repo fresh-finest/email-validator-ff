@@ -72,7 +72,7 @@ button:hover {
     resultDiv.innerHTML = "<p>Checking...</p>";
 
     try {
-        const response = await fetch(`http://localhost:5000/verify-all?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`http://localhost:8000/verify-all?email=${encodeURIComponent(email)}`);
         
         // Ensure response is JSON
         if (!response.ok) {
