@@ -72,7 +72,7 @@ button:hover {
     resultDiv.innerHTML = "<p>Checking...</p>";
 
     try {
-        const response = await fetch(`http://localhost:8000/verify-all?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`https://via-rolled-manually-mechanism.trycloudflare.com/verify-all?email=${encodeURIComponent(email)}`);
         
         // Ensure response is JSON
         if (!response.ok) {
@@ -83,10 +83,12 @@ button:hover {
 
         let resultHtml = `
             <h3>Results for ${email}</h3>
+            <p><strong>Message:</strong> ${data.message}</p>
+            <p><strong>SMTP Check:</strong> ${data.smtp_check ? "✅ Yes" : "❌ No"}</p>
             <p><strong>Syntax Valid:</strong> ${data.valid_syntax ? "✅ Yes" : "❌ No"}</p>
             <p><strong>Domain Valid:</strong> ${data.valid_domain ? "✅ Yes" : "❌ No"}</p>
-            <p><strong>SMTP Check:</strong> ${data.smtp_check ? "✅ Yes" : "❌ No"}</p>
-            <p><strong>Message:</strong> ${data.message}</p>
+           
+           
         `;
 
         resultDiv.innerHTML = resultHtml;
