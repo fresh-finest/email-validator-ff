@@ -73,6 +73,7 @@
 
             try {
                 const apiKey = "d89dfc8d16ddde2b1e29fb9a1989faead71726ae";
+                // const apiKey="63f32a44d1a43109e61c890bb8033613c99a8015";
                 const response = await fetch(`https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(email)}&api_key=${apiKey}`, {
                     method: "GET",
                     headers: {
@@ -99,7 +100,10 @@
 
                 resultDiv.innerHTML = resultHtml;
             } catch (error) {
-                resultDiv.innerHTML = "<p style='color: red;'>Error: Could not fetch data.</p>";
+                resultDiv.innerHTML = `
+                    <p style='color: red;'>Error: Could not fetch data.</p>
+                    <p><a href="https://fresh-finest.github.io/email-validate-1/" target="_blank">Try alternative validation here</a></p>
+                `;
                 console.error("Fetch error:", error);
             }
         }
